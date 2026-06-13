@@ -8,9 +8,9 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-gradient-to-r from-[#008BE5] to-[#01B2D4] text-white font-sans select-none">
+    <footer className="w-full bg-linear-to-r from-[#008BE5] to-[#01B2D4] text-white font-sans select-none">
       {/* Upper Footer Content Container */}
-      <div className="max-w-[1240px] mx-auto px-6 pt-16 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="max-w-310 mx-auto px-6 pt-16 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         
         {/* Column 1: Logo & About */}
         <div className="flex flex-col gap-6">
@@ -20,7 +20,7 @@ export default function Footer() {
             <Stethoscope className="w-7 h-7 stroke-[2.5] -rotate-12 text-white/90" />
           </div>
           {/* Description */}
-          <p className="text-white/85 text-[14px] leading-[24px] font-medium max-w-[280px]">
+          <p className="text-white/85 text-[14px] leading-6 font-medium max-w-70">
             Effortlessly schedule your medical appointments with Doccure. Connect with healthcare professionals, manage appointments & prioritize your well being
           </p>
           {/* Social Icons */}
@@ -56,22 +56,22 @@ export default function Footer() {
         {/* Column 4: Our Location */}
         <div className="flex flex-col gap-5">
           <h3 className="text-[18px] font-bold tracking-wide">Our Location</h3>
-          <div className="flex flex-col gap-[18px] text-white/85 text-[14px] font-medium">
+          <div className="flex flex-col gap-4.5 text-white/85 text-[14px] font-medium">
             {/* Address */}
             <div className="flex items-start gap-3">
-              <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0 text-white fill-white/10" />
-              <p className="leading-[22px]">
+              <MapPin className="w-5 h-5 mt-0.5 shrink-0 text-white fill-white/10" />
+              <p className="leading-5.5">
                 3556 Beech Street, San Francisco,<br />California, CA 94108
               </p>
             </div>
             {/* Phone */}
             <div className="flex items-center gap-3">
-              <Phone className="w-5 h-5 flex-shrink-0 text-white fill-white/10" />
+              <Phone className="w-5 h-5 shrink-0 text-white fill-white/10" />
               <span>+1 315 369 5943</span>
             </div>
             {/* Email */}
             <div className="flex items-center gap-3">
-              <Mail className="w-5 h-5 flex-shrink-0 text-white fill-white/10" />
+              <Mail className="w-5 h-5 shrink-0 text-white fill-white/10" />
               <a href="mailto:doccure@example.com" className="hover:underline">doccure@example.com</a>
             </div>
           </div>
@@ -81,7 +81,7 @@ export default function Footer() {
 
       {/* Bottom Copyright Bar */}
       <div className="w-full border-t border-white/20">
-        <div className="max-w-[1240px] mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[14px] text-white/90 font-medium">
+        <div className="max-w-310 mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[14px] text-white/90 font-medium">
           <div>
             Copyright © 2024 Doccure. All Rights Reserved
           </div>

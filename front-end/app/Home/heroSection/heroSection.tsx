@@ -30,8 +30,8 @@ export default function HeroSection() {
           </div>
 
           <div className=" justify-center lg:justify-end">
-            <div className="relative w-full max-w-[420px]">
-                  <div className="relative h-[480px] w-[400px] overflow-hidden">
+            <div className="relative w-full max-w-105">
+                  <div className="relative h-120 w-100 overflow-hidden">
                     <Image
                       src="/images/navHero/doctor.png"
                       alt="Doctor"

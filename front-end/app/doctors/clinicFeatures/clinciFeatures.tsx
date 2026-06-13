@@ -1,5 +1,4 @@
 import Image from "next/image";
-import backgroundImage from '../../../../public/images/navHero/Background.png';
 import ClinicFeaturesList from "./clinicComponents/ClinicFeaturesList";
 
 export default function ClinicFeatures() {
@@ -7,7 +6,7 @@ export default function ClinicFeatures() {
     <div className="relative w-full overflow-hidden select-none">
       <div className="absolute inset-0 z-0">
         <Image 
-          src={backgroundImage} 
+          src="/images/navHero/Background.png" 
           alt="Background" 
           fill
           priority

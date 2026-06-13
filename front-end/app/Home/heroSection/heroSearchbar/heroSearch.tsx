@@ -1,5 +1,5 @@
 'use client';
-import Buttons from "../../../../components/button";
+import Buttons from "../../../components/button";
 import { Search, MapPin, Stethoscope } from 'lucide-react';
 
 export default function HeroSearch() {

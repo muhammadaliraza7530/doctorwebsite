@@ -1,33 +1,28 @@
 'use client';
 
-import { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { ChevronRight, ChevronLeft, Star, MapPin, Check } from "lucide-react";
 
-export default function AppomentsFirstStep() {
-  const searchParams = useSearchParams();
-  const [selectedService, setSelectedService] = useState<number>(1);
-  const [selectedDoctor, setSelectedDoctor] = useState({
-    name: "Dr. Michael Brown",
-    specialty: "Psychologist",
-    rating: 5.0,
-    location: "Minneapolis, MN",
-    imageSrc: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150",
-    address: "1011 W 5th St, Suite 120, Austin, TX 78703",
-  });
+type DoctorDetails = {
+  id?: string;
+  name: string;
+  specialty: string;
+  rating: number;
+  location: string;
+  imageSrc: string;
+  duration: string;
+  fees: string;
+  address: string;
+};
 
-  useEffect(() => {
-    if (searchParams.has("doctorName")) {
-      setSelectedDoctor({
-        name: searchParams.get("doctorName") || "Dr. Michael Brown",
-        specialty: searchParams.get("specialty") || "Psychologist",
-        rating: parseFloat(searchParams.get("rating") || "5.0"),
-        location: searchParams.get("location") || "Minneapolis, MN",
-        imageSrc: searchParams.get("imageSrc") || "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150",
-        address: "1011 W 5th St, Suite 120, Austin, TX 78703",
-      });
-    }
-  }, [searchParams]);
+type AppomentsStepProps = {
+  onNext: () => void;
+  onBack: () => void;
+  selectedDoctor: DoctorDetails;
+};
+
+export default function AppomentsFirstStep({ onNext, onBack, selectedDoctor }: AppomentsStepProps) {
+  const [selectedService, setSelectedService] = useState<number>(1);
    
   const steps = [
     { id: 1, name: "Specialty" },
@@ -48,7 +43,7 @@ export default function AppomentsFirstStep() {
   ];
 
   return (
-    <div className="w-full max-w-[940px] mx-auto bg-[#F8F9FA] rounded-[24px] p-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
+    <div className="w-full max-w-[940px] mt-28 mx-auto bg-[#F8F9FA] rounded-[24px] p-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
       
       {/* 1. Top Horizontal Stepper Progress Bar */}
       <div className="flex items-center justify-center gap-2 md:gap-4 mb-10 overflow-x-auto pb-2 scrollbar-none">
@@ -163,11 +158,11 @@ export default function AppomentsFirstStep() {
 
       {/* 5. Bottom Navigation Action Buttons Bar */}
       <div className="w-full flex items-center justify-between gap-4 mt-6 pt-2">
-        <button className="bg-[#01122C] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:bg-black active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
+        <button onClick={onBack} className="bg-[#01122C] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:bg-black active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
           <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
           Back
         </button>
-        <button className="bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:opacity-95 shadow-[0_4px_12px_rgba(0,123,255,0.2)] active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
+        <button onClick={onNext} className="bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:opacity-95 shadow-[0_4px_12px_rgba(0,123,255,0.2)] active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
           Select Appointment Type
           <ChevronRight className="w-4 h-4 stroke-[2.5]" />
         </button>

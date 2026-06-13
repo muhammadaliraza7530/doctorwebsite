@@ -18,13 +18,8 @@ export default function DoctorsPages({ params }: DoctorPageProps) {
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-12">
       <div className="max-w-5xl mx-auto bg-white rounded-[24px] shadow-[0_10px_50px_rgba(15,23,42,0.08)] overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-8 p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-8 p-8">
           <div className="flex flex-col gap-6">
-            <img
-              src={doctor.image}
-              alt={doctor.name}
-              className="w-full h-[400px] rounded-[24px] object-cover"
-            />
             <div className="rounded-[24px] bg-slate-100 p-6">
               <h1 className="text-3xl font-bold text-slate-900">{doctor.name}</h1>
               <p className="text-slate-500 mt-2">{doctor.specialty}</p>
@@ -39,9 +34,7 @@ export default function DoctorsPages({ params }: DoctorPageProps) {
                 </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex flex-col gap-6">
             <div className="rounded-[24px] bg-slate-100 p-8 shadow-sm">
               <p className="text-sm uppercase tracking-[0.18em] text-slate-500">Doctor Profile</p>
               <h2 className="mt-4 text-4xl font-bold text-slate-950">{doctor.name}</h2>
@@ -66,6 +59,14 @@ export default function DoctorsPages({ params }: DoctorPageProps) {
                 Book now to take the first step toward better health.
               </p>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-6">
+            <img
+              src={doctor.image}
+              alt={doctor.name}
+              className="w-full h-[400px] rounded-[24px] object-cover opacity-50"
+            />
           </div>
         </div>
       </div>

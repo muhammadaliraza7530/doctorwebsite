@@ -3,7 +3,25 @@
 import { useState } from "react";
 import { ChevronRight, ChevronLeft, Star, MapPin, Check, Building2, Video, Phone, MessageSquare, Home } from "lucide-react";
 
-export default function AppomentsSecondStep() {
+type DoctorDetails = {
+  id?: string;
+  name: string;
+  specialty: string;
+  rating: number;
+  location: string;
+  imageSrc: string;
+  duration: string;
+  fees: string;
+  address: string;
+};
+
+type AppomentsStepProps = {
+  onNext: () => void;
+  onBack: () => void;
+  selectedDoctor: DoctorDetails;
+};
+
+export default function AppomentsSecondStep({ onNext, onBack, selectedDoctor }: AppomentsStepProps) {
   // Active Appointment Type State (Default: Clinic)
   const [selectedType, setSelectedType] = useState<string>("Clinic");
   // Selected Clinic List State (Default: Vitalplus Clinic)
@@ -33,7 +51,7 @@ export default function AppomentsSecondStep() {
   ];
 
   return (
-    <div className="w-full max-w-[940px] mx-auto bg-[#F8F9FA] rounded-[24px] p-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
+    <div className="w-full max-w-[940px] mt-28 mx-auto bg-[#F8F9FA] rounded-[24px] p-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
       
       {/* 1. Top Stepper Progress Bar (Step 1 Completed Checkmark) */}
       <div className="flex items-center justify-center gap-2 md:gap-4 mb-10 overflow-x-auto pb-2 scrollbar-none">
@@ -73,24 +91,24 @@ export default function AppomentsSecondStep() {
         <div className="w-full bg-[#F8F9FA] rounded-[16px] border border-[#EFF2F5] p-5 flex items-start gap-4">
           <div className="relative w-[75px] h-[75px] rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 bg-sky-200">
             <img
-              src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150"
-              alt="Doctor"
+              src={selectedDoctor.imageSrc}
+              alt={selectedDoctor.name}
               className="w-full h-full object-cover object-top"
             />
           </div>
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-2 flex-wrap">
               <h2 className="text-[#032B5B] text-[18px] font-bold tracking-tight">
-                Dr. Michael Brown
+                {selectedDoctor.name}
               </h2>
               <span className="bg-[#E04F16] text-white text-[11px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5 shadow-sm">
-                <Star className="w-2.5 h-2.5 fill-current stroke-none" /> 5.0
+                <Star className="w-2.5 h-2.5 fill-current stroke-none" /> {selectedDoctor.rating.toFixed(1)}
               </span>
             </div>
-            <span className="text-[#4E46E5] text-[13px] font-semibold">Psychologist</span>
+            <span className="text-[#4E46E5] text-[13px] font-semibold">{selectedDoctor.specialty}</span>
             <div className="flex items-center gap-1 text-[#64748B] text-[13px] font-medium mt-1">
               <MapPin className="w-3.5 h-3.5 text-slate-400 stroke-[2.5]" />
-              <span>5th Street - 1011 W 5th St, Suite 120, Austin, TX 78703</span>
+              <span>{selectedDoctor.address || selectedDoctor.location}</span>
             </div>
           </div>
         </div>
@@ -172,11 +190,11 @@ export default function AppomentsSecondStep() {
 
       {/* 5. Bottom Navigation Action Controllers */}
       <div className="w-full flex items-center justify-between gap-4 mt-6 pt-2">
-        <button className="bg-[#01122C] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:bg-black active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
+        <button onClick={onBack} className="bg-[#01122C] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:bg-black active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
           <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
           Back
         </button>
-        <button className="bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:opacity-95 shadow-[0_4px_12px_rgba(0,123,255,0.2)] active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
+        <button onClick={onNext} className="bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:opacity-95 shadow-[0_4px_12px_rgba(0,123,255,0.2)] active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
           Select Date & Time
           <ChevronRight className="w-4 h-4 stroke-[2.5]" />
         </button>

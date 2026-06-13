@@ -156,9 +156,12 @@ export default function DoctorsCards({ searchQuery }: DoctorsCardsProps) {
     params.set("doctorId", doctor.id);
     params.set("doctorName", doctor.name);
     params.set("specialty", doctor.specialty);
-    params.set("rating", doctor.rating);
+    params.set("rating", doctor.rating.toString());
     params.set("location", doctor.location);
     params.set("imageSrc", doctor.imageSrc);
+    params.set("duration", doctor.duration);
+    params.set("fees", doctor.fees);
+    params.set("address", doctor.location);
     router.push(`/appoments?${params.toString()}`);
   };
 
