@@ -16,12 +16,15 @@ type DoctorDetails = {
 };
 
 type AppomentsStepProps = {
+  currentStep: number;
   onNext: () => void;
   onBack: () => void;
   selectedDoctor: DoctorDetails;
+  onEmailChange?: (email: string) => void;
+  onFullNameChange?: (name: string) => void;
 };
 
-export default function AppomentsFourthStep({ onNext, onBack, selectedDoctor }: AppomentsStepProps) {
+export default function AppomentsFourthStep({ currentStep, onNext, onBack, selectedDoctor, onEmailChange, onFullNameChange }: AppomentsStepProps) {
   // Form input handling states
   const [formData, setFormData] = useState({
     firstName: "",
@@ -91,72 +94,52 @@ export default function AppomentsFourthStep({ onNext, onBack, selectedDoctor }: 
 
   const handleSubmit = () => {
     if (validateForm()) {
+      if (onEmailChange) {
+        onEmailChange(formData.emailAddress.trim());
+      }
+      if (onFullNameChange) {
+        onFullNameChange(`${formData.firstName.trim()} ${formData.lastName.trim()}`);
+      }
       onNext();
     }
   };
 
   return (
-    <div className="w-full max-w-[940px] mt-28 mx-auto bg-[#F8F9FA] rounded-[24px] p-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
+    <div className="w-full max-w-[980px] mt-28 mx-auto bg-[#F8F9FA] rounded-[24px] px-4 py-6 sm:px-6 sm:py-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)] animate-fade-in-up">
       
       {/* 1. Top Stepper Header (Steps 1, 2 & 3 Completed) */}
-      <div className="flex items-center justify-center gap-2 md:gap-4 mb-10 overflow-x-auto pb-2 scrollbar-none">
-        {steps.map((step, idx) => (
-          <div key={step.id} className="flex items-center gap-2 shrink-0">
-            <div className="flex flex-col items-center gap-1.5">
-              <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-bold transition-all ${
-                  step.isCompleted
-                    ? "bg-[#10B981] text-white"
-                    : step.isActive
-                    ? "bg-[#007BFF] text-white ring-4 ring-blue-100"
-                    : "bg-[#E2E8F0] text-[#94A3B8]"
-                }`}
-              >
-                {step.isCompleted ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : step.id}
-              </div>
-              <span
-                className={`text-[12px] font-semibold tracking-tight ${
-                  step.isActive || step.isCompleted ? "text-[#032B5B]" : "text-[#94A3B8]"
-                }`}
-              >
-                {step.name}
-              </span>
+      <div className="flex items-center justify-start gap-2 md:gap-4 mb-10 overflow-x-auto pb-2 scrollbar-none">
+        {steps.map((step, idx) => {
+          const isCompleted = step.id < currentStep;
+          const isActive = step.id === currentStep;
+          return (
+            <div key={step.id} className="flex items-center gap-2 shrink-0">
+              <div className="flex flex-col items-center gap-1.5">
+                <div
+                  className={`w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-bold transition-all ${
+                    isCompleted
+                      ? "bg-[#10B981] text-white"
+                      : isActive
+                      ? "bg-[#007BFF] text-white ring-4 ring-blue-100"
+                      : "bg-[#E2E8F0] text-[#94A3B8]"
+                  }`}
+                >
+                  {isCompleted ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : step.id}
+                </div>
+                <span
+                  className={`text-[12px] font-semibold tracking-tight ${
+                    isActive || isCompleted ? "text-[#032B5B]" : "text-[#94A3B8]"
+                  }`}
+                >
+                  {step.name}
+                </span>
             </div>
             {idx < steps.length - 1 && (
               <div className="w-8 md:w-12 h-[1px] border-t border-dashed border-slate-200 mt-[-18px]" />
             )}
           </div>
-        ))}
-      </div>
-
-      {/* Main Container Form Panel */}
-      <div className="w-full bg-white rounded-[18px] border border-[#EFF2F5] p-6 shadow-sm flex flex-col gap-6">
-        
-        {/* 2. Doctor Header Profile Module */}
-        <div className="w-full bg-[#F8F9FA] rounded-[16px] border border-[#EFF2F5] p-5 flex flex-col gap-4">
-          <div className="flex items-start gap-4">
-            <div className="relative w-[75px] h-[75px] rounded-full overflow-hidden border-2 border-white shadow-sm shrink-0 bg-sky-200">
-              <img
-                src={selectedDoctor.imageSrc}
-                alt={selectedDoctor.name}
-                className="w-full h-full object-cover object-top"
-              />
-            </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-[#032B5B] text-[18px] font-bold tracking-tight">{selectedDoctor.name}</h2>
-                <span className="bg-[#E04F16] text-white text-[11px] font-bold px-1.5 py-0.5 rounded flex items-center gap-0.5 shadow-sm">
-                  <Star className="w-2.5 h-2.5 fill-current stroke-none" /> {selectedDoctor.rating.toFixed(1)}
-                </span>
-              </div>
-              <span className="text-[#4E46E5] text-[13px] font-semibold">{selectedDoctor.specialty}</span>
-              <div className="flex items-center gap-1 text-[#64748B] text-[13px] font-medium mt-1">
-                <MapPin className="w-3.5 h-3.5 text-slate-400 stroke-[2.5]" />
-                <span>{selectedDoctor.address || selectedDoctor.location}</span>
-              </div>
-            </div>
-          </div>
-
+          );
+        })}
           {/* Inner Booking Summary Stats Row */}
           <div className="w-full border-t border-slate-200/60 pt-4 mt-1 grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="flex flex-col gap-0.5">
@@ -178,7 +161,7 @@ export default function AppomentsFourthStep({ onNext, onBack, selectedDoctor }: 
         <form className="flex flex-col gap-5">
           
           {/* Row 1: Name & Phone Matrix */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
               <label className="text-[#032B5B] text-[14px] font-bold">First Name</label>
               <input
@@ -221,7 +204,7 @@ export default function AppomentsFourthStep({ onNext, onBack, selectedDoctor }: 
           </div>
 
           {/* Row 2: Email, Patient Dropdown & Symptoms */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             <div className="flex flex-col gap-2">
               <label className="text-[#032B5B] text-[14px] font-bold">Email Address</label>
               <input
@@ -305,7 +288,7 @@ export default function AppomentsFourthStep({ onNext, onBack, selectedDoctor }: 
       </div>
 
       {/* 4. Bottom Directional Actions Panel */}
-      <div className="w-full flex items-center justify-between gap-4 mt-6 pt-2">
+      <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mt-6 pt-2">
         <button onClick={onBack} className="bg-[#01122C] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:bg-black active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
           <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
           Back

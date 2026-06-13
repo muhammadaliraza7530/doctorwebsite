@@ -1,4 +1,7 @@
+'use client';
+
 import ClinicFeaturesCard from "./ClinicFeaturesCard";
+import { useScrollAnimation } from "../../../../hooks/useScrollAnimation";
 
 const featuresData = [
   {
@@ -24,15 +27,24 @@ const featuresData = [
 ];
 
 export default function ClinicFeaturesList() {
+  const { ref: containerRef, isVisible } = useScrollAnimation();
+
   return (
-    <div className="w-full max-w-6xl mx-auto px-4">
+    <div ref={containerRef} className="w-full max-w-6xl mx-auto px-4">
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-      {featuresData.map((feature) => (
-        <ClinicFeaturesCard
+      {featuresData.map((feature, index) => (
+        <div
           key={feature.id}
-          title={feature.title}
-          imageSrc={feature.imageSrc}
-        />
+          className={`${isVisible ? 'animate-scale-in' : 'opacity-0'}`}
+          style={{
+            animationDelay: isVisible ? `${0.1 * index}s` : '0s'
+          }}
+        >
+          <ClinicFeaturesCard
+            title={feature.title}
+            imageSrc={feature.imageSrc}
+          />
+        </div>
       ))}
       </div>
     </div>

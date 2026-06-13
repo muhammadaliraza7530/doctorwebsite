@@ -25,6 +25,8 @@ export default function AppomentsClient() {
   const searchParams = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedDoctor, setSelectedDoctor] = useState(defaultDoctor);
+  const [userEmail, setUserEmail] = useState("");
+  const [userFullName, setUserFullName] = useState("");
 
   useEffect(() => {
     if (searchParams.has("doctorName")) {
@@ -46,23 +48,24 @@ export default function AppomentsClient() {
   const handleBack = () => setCurrentStep((prev) => Math.max(prev - 1, 1));
 
   return (
-    <div>
+    <div className="animate-fade-in-up">
       {currentStep === 1 && (
-        <AppomentsFirstStep onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} />
+        <AppomentsFirstStep currentStep={currentStep} onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} />
       )}
       {currentStep === 2 && (
-        <AppomentsSecondStep onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} />
+        <AppomentsSecondStep currentStep={currentStep} onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} />
       )}
       {currentStep === 3 && (
-        <AppomentsThridStep onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} />
+        <AppomentsThridStep currentStep={currentStep} onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} />
       )}
       {currentStep === 4 && (
-        <AppomentsFourStep onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} />
+        <AppomentsFourStep currentStep={currentStep} onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} onEmailChange={setUserEmail} onFullNameChange={setUserFullName} />
       )}
       {currentStep === 5 && (
-        <AppomentsFifthStep onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} />
+        <AppomentsFifthStep currentStep={currentStep} onNext={handleNext} onBack={handleBack} selectedDoctor={selectedDoctor} />
       )}
-      {currentStep === 6 && <AppomentsSixStep onBack={handleBack} selectedDoctor={selectedDoctor} />}
+      {currentStep === 6 && <AppomentsSixStep currentStep={currentStep} onBack={handleBack} selectedDoctor={selectedDoctor} userEmail={userEmail} userFullName={userFullName} />}
     </div>
   );
 }
+

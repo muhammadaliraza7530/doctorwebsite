@@ -39,15 +39,15 @@ export default function CardComponent({
   };
 
   return (
-    <div className="w-full max-w-[360px] mx-auto bg-white rounded-[20px] shadow-[0_4px_25px_rgba(0,0,0,0.05)] overflow-hidden border border-slate-50 font-sans select-none flex flex-col justify-between">
+    <div className="w-full max-w-[360px] mx-auto bg-white rounded-[20px] shadow-[0_4px_25px_rgba(0,0,0,0.05)] overflow-hidden border border-slate-50 font-sans select-none flex flex-col justify-between hover:shadow-[0_12px_40px_rgba(0,123,255,0.15)] hover:-translate-y-1 transition-all duration-300">
       <div>
-        <div className="relative w-full h-[200px]">
+        <div className="relative w-full h-[200px] overflow-hidden">
           <img
             src={image}
             alt={name ?? "Doctor"}
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-500"
           />
-          <div className="absolute top-[14px] right-[14px] bg-[#007BFF] text-white font-semibold text-[17px] px-[16px] py-[6px] rounded-full shadow-sm tracking-wide">
+          <div className="absolute top-[14px] right-[14px] bg-[#007BFF] text-white font-semibold text-[17px] px-[16px] py-[6px] rounded-full shadow-sm tracking-wide animate-scale-in">
             {priceRange}
           </div>
         </div>
@@ -88,14 +88,14 @@ export default function CardComponent({
           <button
             type="button"
             onClick={onViewProfile}
-            className="flex-1 bg-[#01122C] text-white cursor-pointer text-[15px] font-semibold py-[11px] px-4 rounded-full hover:bg-black transition-colors duration-200 focus:outline-none"
+            className="flex-1 bg-[#01122C] text-white cursor-pointer text-[15px] font-semibold py-[11px] px-4 rounded-full hover:bg-black transition-all duration-200 focus:outline-none active:scale-95"
           >
             View Profile
           </button>
           <button
             type="button"
             onClick={onBookNow}
-            className="flex-1 bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white cursor-pointer text-[15px] font-semibold py-[11px] px-4 rounded-full hover:opacity-95 transition-opacity duration-200 focus:outline-none"
+            className="flex-1 bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white cursor-pointer text-[15px] font-semibold py-[11px] px-4 rounded-full hover:opacity-95 transition-all duration-200 focus:outline-none active:scale-95"
           >
             Book Now
           </button>

@@ -7,7 +7,7 @@ const adminEmail = "muhammadaliraza7530@gmail.com";
 
 function createTransporter() {
   if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
-    throw new Error("SMTP_USER and SMTP_PASS must be configured in environment variables.");
+    return null;
   }
 
   return nodemailer.createTransport({
@@ -29,8 +29,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Full name and email are required." }, { status: 400 });
   }
 
+  const transporter = createTransporter();
+  if (!transporter) {
+    console.error("Signup email error: SMTP_USER and SMTP_PASS are not configured in environment variables.");
+    return NextResponse.json(
+      { error: "SMTP_USER and SMTP_PASS are not configured in environment variables. Configure them to send signup emails." },
+      { status: 501 }
+    );
+  }
+
   try {
-    const transporter = createTransporter();
     const fromAddress = process.env.EMAIL_FROM || process.env.SMTP_USER;
 
     await transporter.sendMail({

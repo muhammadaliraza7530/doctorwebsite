@@ -166,26 +166,31 @@ export default function DoctorsCards({ searchQuery }: DoctorsCardsProps) {
   };
 
   return (
-    <div className="w-full bg-slate-50/50 py-12 px-4 min-h-screen">
+    <div className="w-full bg-slate-50/50 py-12 px-4 min-h-screen animate-fade-in-up">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 max-w-6xl m-auto justify-items-center">
-        {filteredDoctors.map((doctor) => (
-          <DoctorCardComponent
+        {filteredDoctors.map((doctor, index) => (
+          <div
             key={doctor.id}
-            imageSrc={doctor.imageSrc}
-            rating={doctor.rating}
-            specialty={doctor.specialty}
-            isAvailable={doctor.isAvailable}
-            name={doctor.name}
-            location={doctor.location}
-            duration={doctor.duration}
-            fees={doctor.fees}
-            onBookNow={() => handleBookNow(doctor)}
-            onFavorite={() => console.log(`Added ${doctor.name} to favorites`)}
-          />
+            className="opacity-0 animate-fade-in-up"
+            style={{ animationDelay: `${index * 0.08}s` }}
+          >
+            <DoctorCardComponent
+              imageSrc={doctor.imageSrc}
+              rating={doctor.rating}
+              specialty={doctor.specialty}
+              isAvailable={doctor.isAvailable}
+              name={doctor.name}
+              location={doctor.location}
+              duration={doctor.duration}
+              fees={doctor.fees}
+              onBookNow={() => handleBookNow(doctor)}
+              onFavorite={() => console.log(`Added ${doctor.name} to favorites`)}
+            />
+          </div>
         ))}
       </div>
       {filteredDoctors.length === 0 && (
-        <div className="max-w-6xl mx-auto mt-8 rounded-3xl border border-slate-200 bg-white p-8 text-center text-[#0F172A] shadow-sm">
+        <div className="max-w-6xl mx-auto mt-8 rounded-3xl border border-slate-200 bg-white p-8 text-center text-[#0F172A] shadow-sm animate-fade-in-up">
           No doctors found matching "{searchQuery}".
         </div>
       )}

@@ -8,7 +8,7 @@ export default function Doctor() {
   const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <div>
+    <div className="flex flex-col animate-fade-in-up">
       <DoctorHeader onSearch={setSearchQuery} />
       <DoctorsCards searchQuery={searchQuery} />
     </div>

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 import { 
   Mail,
@@ -5,15 +7,18 @@ import {
   MapPin,
   Phone
 } from "lucide-react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
 
 export default function Footer() {
+  const { ref: footerRef, isVisible } = useScrollAnimation();
+
   return (
-    <footer className="w-full bg-linear-to-r from-[#008BE5] to-[#01B2D4] text-white font-sans select-none">
+    <footer ref={footerRef} className="w-full bg-linear-to-r from-[#008BE5] to-[#01B2D4] text-white font-sans select-none">
       {/* Upper Footer Content Container */}
       <div className="max-w-310 mx-auto px-6 pt-16 pb-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
         
         {/* Column 1: Logo & About */}
-        <div className="flex flex-col gap-6">
+        <div className={`flex flex-col gap-6 ${isVisible ? 'animate-fade-in-up' : 'opacity-0'}`}>
           {/* Logo */}
           <div className="flex items-center gap-2 text-[26px] font-black tracking-wider text-white">
             DOCCURE
@@ -30,7 +35,7 @@ export default function Footer() {
         </div>
 
         {/* Column 2: For Patients */}
-        <div className="flex flex-col gap-5">
+        <div className={`flex flex-col gap-5 ${isVisible ? 'animate-fade-in-up animate-stagger-1' : 'opacity-0'}`}>
           <h3 className="text-[18px] font-bold tracking-wide">For Patients</h3>
           <ul className="flex flex-col gap-3.5 text-white/85 text-[15px] font-medium">
             <li><Link href="#" className="hover:underline hover:text-white transition-all">Search for Doctors</Link></li>
@@ -42,7 +47,7 @@ export default function Footer() {
         </div>
 
         {/* Column 3: For Doctors */}
-        <div className="flex flex-col gap-5">
+        <div className={`flex flex-col gap-5 ${isVisible ? 'animate-fade-in-up animate-stagger-2' : 'opacity-0'}`}>
           <h3 className="text-[18px] font-bold tracking-wide">For Doctors</h3>
           <ul className="flex flex-col gap-3.5 text-white/85 text-[15px] font-medium">
             <li><Link href="#" className="hover:underline hover:text-white transition-all">Appointments</Link></li>
@@ -54,7 +59,7 @@ export default function Footer() {
         </div>
 
         {/* Column 4: Our Location */}
-        <div className="flex flex-col gap-5">
+        <div className={`flex flex-col gap-5 ${isVisible ? 'animate-fade-in-up animate-stagger-3' : 'opacity-0'}`}>
           <h3 className="text-[18px] font-bold tracking-wide">Our Location</h3>
           <div className="flex flex-col gap-4.5 text-white/85 text-[14px] font-medium">
             {/* Address */}
@@ -80,7 +85,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom Copyright Bar */}
-      <div className="w-full border-t border-white/20">
+      <div className={`w-full border-t border-white/20 ${isVisible ? 'animate-fade-in' : 'opacity-0'}`}>
         <div className="max-w-310 mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[14px] text-white/90 font-medium">
           <div>
             Copyright © 2024 Doccure. All Rights Reserved
