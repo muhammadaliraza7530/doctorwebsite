@@ -44,7 +44,8 @@ export default function MYAppointments() {
           <div>
             <h1 className="text-3xl font-bold text-slate-900">My Appointments</h1>
             <p className="mt-2 max-w-2xl text-sm text-slate-500">
-              Aapki confirmed appointments yahan dikhengi. Agar aapne booking complete ki hai to woh yahan save ho jayegi.
+              
+              Your confirmed appointments will appear here. Once you complete a booking, it will be saved here.
             </p>
           </div>
           <div className="rounded-[18px] bg-slate-50 px-5 py-4 text-slate-700">
@@ -54,8 +55,8 @@ export default function MYAppointments() {
 
         {appointments.length === 0 ? (
           <div className="rounded-[24px] border border-dashed border-slate-300 bg-slate-50 p-10 text-center text-slate-600">
-            <p className="text-lg font-semibold text-slate-900">Koi appointments abhi store nahi huin.</p>
-            <p className="mt-2 text-sm text-slate-500">Pehle appointment book karein, phir yahan wapas aakar apni bookings dekh sakte hain.</p>
+            <p className="text-lg font-semibold text-slate-900">No appointments have been stored yet</p>
+            <p className="mt-2 text-sm text-slate-500">Please book an appointment first. You can then return here to view your scheduled bookings</p>
           </div>
         ) : (
           <div className="grid gap-6">

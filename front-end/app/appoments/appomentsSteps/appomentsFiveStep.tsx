@@ -53,41 +53,65 @@ export default function AppomentsFifthStep({ currentStep, onNext, onBack, select
     paymentDetails.discount;
 
   return (
-    <div className="w-full max-w-[980px] mt-28 mx-auto bg-[#F8F9FA] rounded-[24px] px-4 py-6 sm:px-6 sm:py-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)] animate-fade-in-up">
+    <div className="w-full max-w-[940px] mt-24 mx-auto bg-[#F8F9FA] rounded-[24px] p-6 sm:p-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
       
       {/* 1. Top Stepper Header Progress Bar (Steps 1 to 4 Completed) */}
-      <div className="flex items-center justify-start gap-2 md:gap-4 mb-10 overflow-x-auto pb-2 scrollbar-none">
-        {steps.map((step, idx) => {
-          const isCompleted = step.id < currentStep;
-          const isActive = step.id === currentStep;
+      <div className="flex items-center justify-start gap-3 overflow-x-auto pb-3 mb-10 scrollbar-none px-1">
+        {steps.map((step) => {
+          const isActive = step.isActive || step.id === currentStep;
           return (
-            <div key={step.id} className="flex items-center gap-2 shrink-0">
-              <div className="flex flex-col items-center gap-1.5">
-                <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-bold transition-all ${
-                    isCompleted
-                      ? "bg-[#10B981] text-white"
-                      : isActive
-                      ? "bg-[#007BFF] text-white ring-4 ring-blue-100"
-                      : "bg-[#E2E8F0] text-[#94A3B8]"
-                  }`}
-                >
-                  {isCompleted ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : step.id}
-                </div>
-                <span
-                  className={`text-[12px] font-semibold tracking-tight ${
-                    isActive || isCompleted ? "text-[#032B5B]" : "text-[#94A3B8]"
-                  }`}
-                >
-                  {step.name}
-                </span>
+            <div key={step.id} className="min-w-[72px] flex flex-col items-center gap-1.5 text-center">
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold transition-all ${
+                  step.isCompleted
+                    ? "bg-[#10B981] text-white"
+                    : isActive
+                    ? "bg-[#007BFF] text-white ring-4 ring-blue-100"
+                    : "bg-[#E2E8F0] text-[#94A3B8]"
+                }`}
+              >
+                {step.isCompleted ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : step.id}
+              </div>
+              <span
+                className={`text-[11px] font-semibold tracking-tight ${
+                  isActive || step.isCompleted ? "text-[#032B5B]" : "text-[#94A3B8]"
+                }`}
+              >
+                {step.name}
+              </span>
             </div>
-            {idx < steps.length - 1 && (
-              <div className="w-8 md:w-12 h-[1px] border-t border-dashed border-slate-200 mt-[-18px]" />
-            )}
-          </div>
           );
         })}
+      </div>
+
+      {/* Main Two-Column Panel Gateway Framework */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        {/* Left Column (Grid: 7) - Cash Method Selection & Guidelines */}
+        <div className="lg:col-span-7 bg-white rounded-[18px] border border-[#EFF2F5] p-6 shadow-sm flex flex-col gap-5">
+          <h3 className="text-[#032B5B] text-[16px] font-bold tracking-tight">Payment Gateway</h3>
+          
+          {/* Cash on Hand Selectable Block Option */}
+          <div className="w-full p-5 rounded-[12px] border-2 border-[#007BFF] bg-[#F4F9FF] flex items-start gap-4">
+            <div className="w-10 h-10 bg-[#007BFF]/10 text-[#007BFF] rounded-[10px] flex items-center justify-center shrink-0">
+              <Banknote className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-[#032B5B] text-[15px] font-bold tracking-tight">Cash on Hand / Pay at Clinic</span>
+              <p className="text-[#64748B] text-[13px] font-medium leading-relaxed">
+                No online card details required. You can pay by cash at the clinic counter at the time of your appointment.
+              </p>
+            </div>
+          </div>
+
+          {/* Quick Notice Security Badge */}
+          <div className="w-full bg-slate-50 border border-slate-100 rounded-[10px] p-4 flex items-center gap-2.5 text-[#64748B] text-[13px] font-medium">
+            <ShieldCheck className="w-4 h-4 text-[#10B981] shrink-0 stroke-[2.5]" />
+            <span>Your booking will be instantly secured without any pre-payment.</span>
+          </div>
+
+          {/* Explicit Terms & Conditions Checklist Toggler */}
+          <label className="flex items-start gap-3 mt-2 cursor-pointer group">
             <input
               type="checkbox"
               checked={agreeToTerms}
@@ -95,7 +119,7 @@ export default function AppomentsFifthStep({ currentStep, onNext, onBack, select
               className="w-4 h-4 mt-0.5 rounded border-slate-300 text-[#007BFF] focus:ring-[#007BFF] cursor-pointer"
             />
             <span className="text-slate-500 text-[13px] font-medium leading-tight group-hover:text-slate-800 transition-colors">
-              Main tasdeeq karta/karti hoon ke diye gaye saare details durust hain aur main scheduled time par clinic visit karne ke liye sehmat hoon.
+              I confirm that all the details provided are correct and I agree to visit the clinic at the scheduled time.
             </span>
           </label>
         </div>
@@ -172,7 +196,7 @@ export default function AppomentsFifthStep({ currentStep, onNext, onBack, select
 
       {/* 5. Bottom Control Footer Navigation Action Bar */}
       <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mt-6 pt-2">
-        <button onClick={onBack} className="bg-[#01122C] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:bg-black active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
+        <button onClick={onBack} className="w-full sm:w-auto bg-[#01122C] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 focus:outline-none">
           <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
           Back
         </button>
@@ -181,7 +205,7 @@ export default function AppomentsFifthStep({ currentStep, onNext, onBack, select
             if (agreeToTerms) onNext();
           }}
           disabled={!agreeToTerms}
-          className={`bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white text-[14px] font-bold px-6 py-[12px] rounded-full shadow-[0_4px_12px_rgba(0,123,255,0.2)] active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none ${
+          className={`w-full sm:w-auto bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white text-[14px] font-bold px-6 py-[12px] rounded-full shadow-[0_4px_12px_rgba(0,123,255,0.2)] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 focus:outline-none ${
             !agreeToTerms ? "opacity-50 cursor-not-allowed" : "hover:opacity-95"
           }`}
         >

@@ -27,7 +27,6 @@ type AppomentsFinalStepProps = {
 export default function AppomentsSixStep({ currentStep, onBack, selectedDoctor, userEmail, userFullName }: AppomentsFinalStepProps) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
-  const [sending, setSending] = useState(false);
   const bookingReference = "DOC-2026-98314"; // Unique custom tracking token
 
   const steps = [
@@ -45,104 +44,90 @@ export default function AppomentsSixStep({ currentStep, onBack, selectedDoctor, 
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleGoToAppointments = async () => {
-    setSending(true);
-    
-    try {
-      // Send appointment confirmation email if user email is available
-      if (userEmail && userFullName) {
-        const response = await fetch("/api/send-appointment-confirmation", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userEmail: userEmail,
-            userFullName: userFullName,
-            bookingReference: bookingReference,
-            doctorName: selectedDoctor.name,
-            doctorSpecialty: selectedDoctor.specialty,
-            doctorRating: selectedDoctor.rating,
-            doctorLocation: selectedDoctor.location,
-            doctorAddress: selectedDoctor.address,
-            appointmentDate: "15 October 2025",
-            appointmentTime: "10:00 - 11:00 AM",
-            duration: selectedDoctor.duration,
-            fees: selectedDoctor.fees,
-          }),
-        });
-
-        if (!response.ok) {
-          console.warn("Failed to send appointment email, but continuing...");
-        }
-      }
-
-      // Save to localStorage
-      if (typeof window !== "undefined") {
-        const existing = window.localStorage.getItem("appointments");
-        const storedAppointments = existing ? JSON.parse(existing) : [];
-        const appointment = {
-          id: bookingReference,
-          doctorName: selectedDoctor.name,
-          specialty: selectedDoctor.specialty,
-          rating: selectedDoctor.rating,
-          location: selectedDoctor.location,
-          address: selectedDoctor.address,
-          imageSrc: selectedDoctor.imageSrc,
-          duration: selectedDoctor.duration,
-          fees: selectedDoctor.fees,
-          date: "15 October 2025",
-          time: "10:00 - 11:00 AM",
-        };
-        const exists = storedAppointments.some((item: any) => item.id === appointment.id);
-        const nextAppointments = exists ? storedAppointments : [...storedAppointments, appointment];
-        window.localStorage.setItem("appointments", JSON.stringify(nextAppointments));
-      }
-
-      router.push("/my-appointments");
-    } catch (error) {
-      console.error("Error in appointment confirmation:", error);
-      // Still navigate even if there's an error
-      router.push("/my-appointments");
-    } finally {
-      setSending(false);
+  const handleGoToAppointments = () => {
+    if (typeof window !== "undefined") {
+      const existing = typeof window !== "undefined" ? window.localStorage.getItem("appointments") : null;
+      const storedAppointments = existing ? JSON.parse(existing) : [];
+      const appointment = {
+        id: bookingReference,
+        doctorName: selectedDoctor.name,
+        specialty: selectedDoctor.specialty,
+        rating: selectedDoctor.rating,
+        location: selectedDoctor.location,
+        address: selectedDoctor.address,
+        imageSrc: selectedDoctor.imageSrc,
+        duration: selectedDoctor.duration,
+        fees: selectedDoctor.fees,
+        date: "15 October 2025",
+        time: "10:00 - 11:00 AM",
+      };
+      const exists = storedAppointments.some((item: any) => item.id === appointment.id);
+      const nextAppointments = exists ? storedAppointments : [...storedAppointments, appointment];
+      window.localStorage.setItem("appointments", JSON.stringify(nextAppointments));
     }
+    router.push("/my-appointments");
   };
 
   return (
-    <div className="w-full max-w-[980px] mt-28 mx-auto bg-[#F8F9FA] rounded-[24px] px-4 py-6 sm:px-6 sm:py-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)] animate-fade-in-up">
+    <div className="w-full max-w-[940px] mt-24 mx-auto bg-[#F8F9FA] rounded-[24px] p-6 sm:p-8 border border-slate-100 font-sans select-none shadow-[0_10px_40px_rgba(0,0,0,0.02)]">
       
       {/* 1. Top Stepper Header Progress Bar (Steps 1 to 5 All Completed) */}
-      <div className="flex items-center justify-start gap-2 md:gap-4 mb-12 overflow-x-auto pb-2 scrollbar-none">
-        {steps.map((step, idx) => {
-          const isCompleted = step.id < currentStep;
-          const isActive = step.id === currentStep;
+      <div className="flex items-center justify-start gap-3 overflow-x-auto pb-3 mb-12 scrollbar-none px-1">
+        {steps.map((step) => {
+          const isActive = step.isActive || step.id === currentStep;
           return (
-            <div key={step.id} className="flex items-center gap-2 shrink-0">
-              <div className="flex flex-col items-center gap-1.5">
-                <div
-                  className={`w-7 h-7 rounded-full flex items-center justify-center text-[13px] font-bold transition-all ${
-                    isCompleted
-                      ? "bg-[#10B981] text-white"
-                      : isActive
-                      ? "bg-[#007BFF] text-white ring-4 ring-blue-100"
-                      : "bg-[#E2E8F0] text-[#94A3B8]"
-                  }`}
-                >
-                  {isCompleted ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : step.id}
-                </div>
-                <span
-                  className={`text-[12px] font-semibold tracking-tight ${
-                    isActive || isCompleted ? "text-[#032B5B]" : "text-[#94A3B8]"
-                  }`}
-                >
-                  {step.name}
-                </span>
+            <div key={step.id} className="min-w-[72px] flex flex-col items-center gap-1.5 text-center">
+              <div
+                className={`w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-bold transition-all ${
+                  step.isCompleted
+                    ? "bg-[#10B981] text-white"
+                    : isActive
+                    ? "bg-[#007BFF] text-white ring-4 ring-blue-100"
+                    : "bg-[#E2E8F0] text-[#94A3B8]"
+                }`}
+              >
+                {step.isCompleted ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : step.id}
+              </div>
+              <span
+                className={`text-[11px] font-semibold tracking-tight ${
+                  isActive || step.isCompleted ? "text-[#032B5B]" : "text-[#94A3B8]"
+                }`}
+              >
+                {step.name}
+              </span>
             </div>
-            {idx < steps.length - 1 && (
-              <div className="w-8 md:w-12 h-[1px] border-t border-dashed border-slate-200 mt-[-18px]" />
-            )}
-          </div>
           );
         })}
+      </div>
+
+      {/* Main Framework Box */}
+      <div className="w-full bg-white rounded-[18px] border border-[#EFF2F5] p-8 shadow-sm flex flex-col items-center text-center max-w-[620px] mx-auto">
+        
+        {/* 2. Success Splash Animated Ring Effect */}
+        <div className="w-[72px] h-[72px] bg-[#10B981]/10 rounded-full flex items-center justify-center text-[#10B981] mb-5 animate-pulse">
+          <CheckCircle2 className="w-12 h-12 stroke-[2.2]" />
+        </div>
+
+        {/* Header Typography */}
+        <h2 className="text-[#032B5B] text-[24px] font-extrabold tracking-tight mb-2">
+          Appointment Booked Successfully!
+        </h2>
+        <p className="text-[#64748B] text-[14px] font-medium max-w-[460px] leading-relaxed mb-6">
+          Your appointment has been confirmed. A confirmation email and SMS message have been sent to you
+        </p>
+
+        {/* 3. Booking Code Reference Copy Box */}
+        <div className="w-full bg-[#F8F9FA] border border-[#EFF2F5] rounded-[12px] p-3.5 flex items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-2">
+            <FileText className="w-4 h-4 text-slate-400 stroke-[2.5]" />
+            <span className="text-slate-500 text-[13px] font-bold uppercase tracking-wider">Booking ID:</span>
+            <span className="text-[#032B5B] text-[14px] font-extrabold font-mono tracking-tight">{bookingReference}</span>
+          </div>
+          <button 
+            onClick={handleCopyToken}
+            className={`text-[12px] font-bold px-3 py-1.5 rounded-[6px] transition-all flex items-center gap-1 ${
+              copied ? "bg-[#10B981] text-white" : "bg-white border border-slate-200 text-[#007BFF] hover:bg-slate-50"
+            }`}
           >
             <Copy className="w-3 h-3" />
             {copied ? "Copied" : "Copy"}
@@ -185,7 +170,7 @@ export default function AppomentsSixStep({ currentStep, onBack, selectedDoctor, 
         <div className="w-full bg-[#F4F9FF] border border-blue-100/70 rounded-[12px] p-4 text-left flex items-start gap-3 mb-2">
           <div className="w-2 h-2 rounded-full bg-[#007BFF] mt-1.5 shrink-0" />
           <p className="text-[#032B5B] text-[13px] font-semibold leading-relaxed">
-            <strong className="text-[#007BFF]">Cash Payment Note:</strong> Kirya clinic counter par check-in karte waqt total billing amount ready rakhein. Appointment time se 15 minute pehle pohnchein.
+            <strong className="text-[#007BFF]">Cash Payment Note:</strong>Please keep the total billing amount ready when checking in at the clinic counter. Kindly arrive 15 minutes before your scheduled appointment time.
           </p>
         </div>
 
@@ -193,17 +178,16 @@ export default function AppomentsSixStep({ currentStep, onBack, selectedDoctor, 
 
       {/* 6. Action Control Board (View Dashboard) */}
       <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 mt-8">
-        <button onClick={onBack} className="bg-[#01122C] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:bg-black active:scale-[0.98] transition-all flex items-center gap-1.5 focus:outline-none">
+        <button onClick={onBack} className="w-full sm:w-auto bg-[#01122C] text-white text-[14px] font-bold px-5 py-[12px] rounded-full hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 focus:outline-none">
           <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
           Back
         </button>
         <button
           onClick={handleGoToAppointments}
-          disabled={sending}
-          className="w-full sm:w-auto bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white text-[14px] font-bold px-8 py-[13px] rounded-full shadow-[0_4px_15px_rgba(0,123,255,0.25)] hover:opacity-95 active:scale-[0.98] transition-all flex items-center gap-2 justify-center focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full sm:w-auto bg-gradient-to-r from-[#007BFF] to-[#00BCD4] text-white text-[14px] font-bold px-8 py-[13px] rounded-full shadow-[0_4px_15px_rgba(0,123,255,0.25)] hover:opacity-95 active:scale-[0.98] transition-all flex items-center gap-2 justify-center focus:outline-none"
         >
           <CalendarCheck className="w-4 h-4 stroke-[2.2]" />
-          {sending ? "Sending Confirmation..." : "Go To My Appointments"}
+          Go To My Appointments
         </button>
       </div>
 
